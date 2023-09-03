@@ -1,0 +1,47 @@
+From 31ba2409db6e17b59bd0b4f0583e5ec0755724a5 Mon Sep 17 00:00:00 2001
+From: chemwolf6922 <wang6922@126.com>
+Date: Sun, 3 Sep 2023 21:04:22 +0800
+Subject: [PATCH] add xPortIsInsideInterrupt
+
+---
+ portable/GCC/ARM_CM0/portmacro.h | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/portable/GCC/ARM_CM0/portmacro.h b/portable/GCC/ARM_CM0/portmacro.h
+index 29806b6d7..d82ee7f34 100644
+--- a/portable/GCC/ARM_CM0/portmacro.h
++++ b/portable/GCC/ARM_CM0/portmacro.h
+@@ -115,6 +115,30 @@
+ 
+     #define portNOP()
+ 
++    #ifndef portFORCE_INLINE
++        #define portFORCE_INLINE    inline __attribute__( ( always_inline ) )
++    #endif
++
++    portFORCE_INLINE static BaseType_t xPortIsInsideInterrupt( void )
++    {
++        uint32_t ulCurrentInterrupt;
++        BaseType_t xReturn;
++
++        /* Obtain the number of the currently executing interrupt. */
++        __asm volatile ( "mrs %0, ipsr" : "=r" ( ulCurrentInterrupt )::"memory" );
++
++        if( ulCurrentInterrupt == 0 )
++        {
++            xReturn = pdFALSE;
++        }
++        else
++        {
++            xReturn = pdTRUE;
++        }
++
++        return xReturn;
++    }
++
+     #define portMEMORY_BARRIER()    __asm volatile ( "" ::: "memory" )
+ 
+     #ifdef __cplusplus
+-- 
+2.17.1
+

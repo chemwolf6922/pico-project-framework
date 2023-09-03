@@ -1,0 +1,1 @@
+git -C ./pico-freertos/FreeRTOS-Kernel apply --index ../0001-add-xPortIsInsideInterrupt.patch
