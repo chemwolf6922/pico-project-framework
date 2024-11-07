@@ -25,7 +25,9 @@
 #define configUSE_QUEUE_SETS                    0
 #define configUSE_TIME_SLICING                  0
 #define configUSE_NEWLIB_REENTRANT              0
+#ifndef configENABLE_BACKWARD_COMPATIBILITY
 #define configENABLE_BACKWARD_COMPATIBILITY     0
+#endif
 #define configNUM_THREAD_LOCAL_STORAGE_POINTERS 5
 #define configSTACK_DEPTH_TYPE                  uint16_t
 #define configMESSAGE_BUFFER_LENGTH_TYPE        size_t
